@@ -5,7 +5,8 @@
       "Bash(find 'd:\\\\Online PC Store System\\\\Source\\\\computer-store-admin-frontend' -maxdepth 2 -type f -name *.json -o -name *.md -o -name *.js -o -name *.ts -o -name *.tsx)",
       "Bash(find 'd:\\\\Online PC Store System\\\\Source\\\\computer-store-admin-frontend\\\\src' -type f -name *.ts -o -name *.tsx)",
       "Bash(find 'd:\\\\Online PC Store System\\\\Source\\\\computer-store-client-frontend\\\\src' -type f \\\\\\(-name *.ts -o -name *.tsx \\\\\\))",
-      "Bash(find 'd:\\\\Online PC Store System\\\\Source\\\\computer-store-client-frontend\\\\src\\\\components' -name *.tsx -type f)"
+      "Bash(find 'd:\\\\Online PC Store System\\\\Source\\\\computer-store-client-frontend\\\\src\\\\components' -name *.tsx -type f)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
