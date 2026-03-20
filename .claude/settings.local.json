@@ -11,7 +11,14 @@
       "Bash(grep -r Portal 'd:/Online PC Store System/Source/computer-store-client-frontend/src/components/ui' --include=*.tsx --include=*.ts)",
       "Bash(xargs grep:*)",
       "Bash(find 'd:/Online PC Store System/Source/computer-store-client-frontend/src/components/ui' -name Select*)",
-      "Bash(find 'd:/Online PC Store System/Source/computer-store-client-frontend/src/components/ui' -name *.tsx)"
+      "Bash(find 'd:/Online PC Store System/Source/computer-store-client-frontend/src/components/ui' -name *.tsx)",
+      "Bash(ls \"d:/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/products/\")",
+      "Bash(find '/d/Online PC Store System/Source/computer-store-client-frontend/src/components' -name *Card* -o -name *Image*)",
+      "Bash(ls \"d:/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/\")",
+      "Bash(cat \"d:/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/compare/page.tsx\")",
+      "Bash(ls '/d/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/')",
+      "Bash(ls '/d/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/products/')",
+      "Bash(ls \"src/app/\\(storefront\\)/build-pc/page.tsx\")"
     ]
   }
 }
