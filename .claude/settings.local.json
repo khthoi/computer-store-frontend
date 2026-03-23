@@ -18,7 +18,15 @@
       "Bash(cat \"d:/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/compare/page.tsx\")",
       "Bash(ls '/d/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/')",
       "Bash(ls '/d/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/products/')",
-      "Bash(ls \"src/app/\\(storefront\\)/build-pc/page.tsx\")"
+      "Bash(ls \"src/app/\\(storefront\\)/build-pc/page.tsx\")",
+      "Bash(find '/d/Online PC Store System/Source/computer-store-client-frontend/src' -type f \\\\\\(-name *toast* -o -name *Toast* -o -name *notification* -o -name *Notification* \\\\\\))",
+      "Bash(find '/d/Online PC Store System/Source/computer-store-client-frontend/src' -type f \\\\\\(-name *.tsx -o -name *.ts \\\\\\))",
+      "Bash(find '/d/Online PC Store System/Source/computer-store-admin-frontend/src' -type f \\\\\\(-name *.tsx -o -name *.ts \\\\\\))",
+      "Bash(ls \"d:\\\\Online PC Store System\\\\Source\\\\computer-store-client-frontend\\\\public\\\\svg\"\" 2>/dev/null || echo \"NOT FOUND \")",
+      "Bash(find 'd:/Online PC Store System/Source/computer-store-client-frontend' -name *mock_data* -type f)",
+      "Bash(find 'd:/Online PC Store System/Source/computer-store-client-frontend/node_modules/@computer-store/ui/src/components' -type f \\\\\\(-name *.tsx -o -name *.ts \\\\\\))",
+      "Bash(ls \"d:/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/account/\")",
+      "Bash(ls \"d:/Online PC Store System/Source/computer-store-client-frontend/src/app/\\(storefront\\)/account/orders/\")"
     ]
   }
 }
