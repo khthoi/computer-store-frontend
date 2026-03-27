@@ -113,6 +113,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     fullWidth = false,
     id: idProp,
     className = "",
+    required,
     ...rest
   },
   ref
@@ -139,6 +140,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           className="mb-1 block text-sm font-medium text-secondary-700"
         >
           {label}
+          {required && <span aria-hidden="true" className="ml-0.5 text-error-600">*</span>}
         </label>
       )}
 
@@ -157,6 +159,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         <input
           ref={ref}
           id={id}
+          required={required}
           aria-invalid={hasError || undefined}
           aria-describedby={describedBy}
           className={[

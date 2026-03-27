@@ -25,7 +25,8 @@ export type AdminStatus =
   | "rejected"
   | "review"
   | "online"
-  | "offline";
+  | "offline"
+  | "banned";
 
 export interface StatusBadgeProps {
   status: AdminStatus;
@@ -54,6 +55,7 @@ const CONFIG: Record<
   review:    { label: "In Review",  wrapper: "bg-info-50 text-info-700 border-info-200",              icon: <MagnifyingGlassCircleIcon aria-hidden="true" /> },
   online:    { label: "Online",     wrapper: "bg-success-50 text-success-700 border-success-200",     icon: <CheckCircleIcon aria-hidden="true" /> },
   offline:   { label: "Offline",    wrapper: "bg-secondary-100 text-secondary-500 border-secondary-200", icon: <XCircleIcon aria-hidden="true" /> },
+  banned:    { label: "Banned",     wrapper: "bg-error-50 text-error-700 border-error-200",           icon: <NoSymbolIcon aria-hidden="true" /> },
 };
 
 const SIZE: Record<"sm" | "md" | "lg", { badge: string; icon: string }> = {

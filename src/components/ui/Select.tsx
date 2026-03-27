@@ -77,6 +77,7 @@ export interface SelectProps {
    *   selection is communicated elsewhere (e.g. an active-filter bar).
    */
   showSelectedInTrigger?: boolean;
+  required?: boolean;
   id?: string;
   className?: string;
 }
@@ -216,11 +217,13 @@ export function Select({
   size = "md",
   dropdownWidth,
   showSelectedInTrigger = true,
+  required,
   id: idProp,
   className = "",
 }: SelectProps) {
   const generatedId = useId();
   const id = idProp ?? generatedId;
+  const labelId = `${id}-label`;
   const listboxId = `${id}-listbox`;
   const errorId = `${id}-error`;
   const helperId = `${id}-helper`;
@@ -398,10 +401,11 @@ export function Select({
     <div className="w-full">
       {label && (
         <label
-          htmlFor={id}
+          id={labelId}
           className="mb-1 block text-sm font-medium text-secondary-700"
         >
           {label}
+          {required && <span aria-hidden="true" className="ml-0.5 text-error-600">*</span>}
         </label>
       )}
 
@@ -412,6 +416,7 @@ export function Select({
           type="button"
           id={id}
           role="combobox"
+          aria-labelledby={label ? labelId : undefined}
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-controls={open ? listboxId : undefined}

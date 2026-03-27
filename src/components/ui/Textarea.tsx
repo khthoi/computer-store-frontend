@@ -115,6 +115,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       defaultValue,
       maxLength,
       className = "",
+      required,
       ...rest
     },
     forwardedRef
@@ -186,6 +187,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             className="mb-1 block text-sm font-medium text-secondary-700"
           >
             {label}
+            {required && <span aria-hidden="true" className="ml-0.5 text-error-600">*</span>}
           </label>
         )}
 
@@ -195,6 +197,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           value={value}
           defaultValue={defaultValue}
           maxLength={maxLength}
+          required={required}
           aria-invalid={hasError || undefined}
           aria-describedby={describedBy}
           onChange={handleChange}

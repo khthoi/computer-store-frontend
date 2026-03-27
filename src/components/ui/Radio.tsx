@@ -34,6 +34,8 @@ export interface RadioGroupProps {
    * @default "vertical"
    */
   direction?: "vertical" | "horizontal";
+  /** Shows a red asterisk after the legend when true */
+  required?: boolean;
   children: ReactNode;
 }
 
@@ -189,6 +191,7 @@ export function RadioGroup({
   errorMessage,
   helperText,
   direction = "vertical",
+  required,
   children,
 }: RadioGroupProps) {
   const errorId = useId();
@@ -206,6 +209,7 @@ export function RadioGroup({
       {legend && (
         <legend className="mb-2 text-sm font-medium text-secondary-700">
           {legend}
+          {required && <span aria-hidden="true" className="ml-0.5 text-error-600">*</span>}
         </legend>
       )}
 

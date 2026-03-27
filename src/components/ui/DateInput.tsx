@@ -36,6 +36,7 @@ export interface DateInputProps {
   /** @default "md" */
   size?: DateInputSize;
   disabled?: boolean;
+  required?: boolean;
   id?: string;
   className?: string;
 }
@@ -437,6 +438,7 @@ export function DateInput({
   placeholder = "DD/MM/YYYY",
   size = "md",
   disabled = false,
+  required,
   id: idProp,
   className = "",
 }: DateInputProps) {
@@ -521,6 +523,7 @@ export function DateInput({
       {label && (
         <label htmlFor={id} className="mb-1 block text-sm font-medium text-secondary-700">
           {label}
+          {required && <span aria-hidden="true" className="ml-0.5 text-error-600">*</span>}
         </label>
       )}
 

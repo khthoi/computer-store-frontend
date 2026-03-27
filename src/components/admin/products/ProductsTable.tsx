@@ -721,6 +721,7 @@ export function ProductsTable({ initialProducts }: ProductsTableProps) {
       <DataTable<ProductRow>
         data={filteredPage as ProductRow[]}
         columns={columns}
+        
         keyField="id"
         selectable
         selectedKeys={selectedProductIds}

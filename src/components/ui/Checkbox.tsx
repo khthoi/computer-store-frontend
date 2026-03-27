@@ -99,6 +99,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       onChange,
       disabled = false,
       className = "",
+      required,
       ...rest
     },
     forwardedRef
@@ -166,6 +167,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               defaultChecked={!isControlled ? internalChecked : undefined}
               onChange={handleChange}
               disabled={disabled}
+              required={required}
               aria-invalid={hasError || undefined}
               aria-describedby={describedBy}
               className="peer absolute inset-0 z-10 size-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
@@ -213,6 +215,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                   ].join(" ")}
                 >
                   {label}
+                  {required && <span aria-hidden="true" className="ml-0.5 text-error-600">*</span>}
                 </label>
               )}
               {description && (

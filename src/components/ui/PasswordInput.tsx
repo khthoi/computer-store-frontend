@@ -73,6 +73,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       size = "md",
       id: idProp,
       className = "",
+      required,
       ...rest
     },
     ref
@@ -100,6 +101,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             className="mb-1 block text-sm font-medium text-secondary-700"
           >
             {label}
+            {required && <span aria-hidden="true" className="ml-0.5 text-error-600">*</span>}
           </label>
         )}
 
@@ -109,6 +111,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             ref={ref}
             id={id}
             type={visible ? "text" : "password"}
+            required={required}
             aria-invalid={hasError || undefined}
             aria-describedby={describedBy}
             className={[

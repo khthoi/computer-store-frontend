@@ -12,6 +12,7 @@ import {
 } from "react";
 import { Checkbox } from "@/src/components/ui/Checkbox";
 import { Select } from "@/src/components/ui/Select";
+import { Tooltip } from "@/src/components/ui/Tooltip";
 import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
@@ -37,6 +38,13 @@ export interface ColumnDef<T = Record<string, unknown>> {
   align?: "left" | "center" | "right";
   /** Tailwind width class (e.g. "w-48", "w-24") */
   width?: string;
+  /**
+   * Show a tooltip on hover.
+   * - `true` → tooltip content = String(rawValue)
+   * - `(value, row) => string` → derive content dynamically
+   * Cell content is wrapped in a truncating span so long values are clipped.
+   */
+  tooltip?: boolean | ((value: unknown, row: T) => string);
 }
 
 export interface BulkAction {
@@ -126,6 +134,20 @@ export interface DataTableProps<T extends Record<string, unknown>> {
    * @default false
    */
   expandedByDefault?: boolean;
+
+  /**
+   * Optional per-row className. Called with the row data; return a Tailwind
+   * class string (or undefined) to apply extra styling to the `<tr>` element.
+   * Applied in addition to the existing selection / hover classes.
+   */
+  rowClassName?: (row: T) => string | undefined;
+
+  /**
+   * When `true`, the pagination footer (row count, page-size selector,
+   * prev/next navigation) is hidden entirely. Useful for embedded tables
+   * where all rows always fit on one screen (e.g. a detail-page address list).
+   */
+  hidePagination?: boolean;
 
   className?: string;
 }
@@ -238,6 +260,8 @@ export function DataTable<T extends Record<string, unknown>>({
   getSubRows,
   renderSubRow,
   expandedByDefault = false,
+  rowClassName,
+  hidePagination = false,
   className = "",
 }: DataTableProps<T>) {
   const searchId = useId();
@@ -590,7 +614,8 @@ export function DataTable<T extends Record<string, unknown>>({
                         isSelected
                           ? "bg-primary-50"
                           : "hover:bg-secondary-50/70",
-                      ].join(" ")}
+                        rowClassName?.(row) ?? "",
+                      ].filter(Boolean).join(" ")}
                     >
                       {/* Select checkbox */}
                       {selectable && (
@@ -640,15 +665,29 @@ export function DataTable<T extends Record<string, unknown>>({
                           ? "—"
                           : String(raw);
 
+                        const cellContent = col.tooltip ? (
+                          <Tooltip
+                            content={
+                              typeof col.tooltip === "function"
+                                ? col.tooltip(raw, row)
+                                : raw == null ? "" : String(raw)
+                            }
+                            placement="top"
+                          >
+                            <span className="inline-block max-w-full truncate align-middle">{display}</span>
+                          </Tooltip>
+                        ) : display;
+
                         return (
                           <td
                             key={col.key}
                             className={[
                               "px-4 py-3 text-secondary-700",
                               ALIGN[col.align ?? "left"],
-                            ].join(" ")}
+                              col.tooltip ? "overflow-hidden" : "",
+                            ].filter(Boolean).join(" ")}
                           >
-                            {display}
+                            {cellContent}
                           </td>
                         );
                       })}
@@ -677,16 +716,32 @@ export function DataTable<T extends Record<string, unknown>>({
                                   : raw == null
                                   ? "—"
                                   : String(raw);
+
+                                const subCellContent = col.tooltip ? (
+                                  <Tooltip
+                                    content={
+                                      typeof col.tooltip === "function"
+                                        ? col.tooltip(raw, subRow as unknown as T)
+                                        : raw == null ? "" : String(raw)
+                                    }
+                                    placement="top"
+                                  >
+                                    <span className="inline-block max-w-full truncate align-middle">{display}</span>
+                                  </Tooltip>
+                                ) : (
+                                  <span className="inline-block max-w-full truncate align-middle">{display}</span>
+                                );
+
                                 return (
                                   <td
                                     key={col.key}
                                     className={[
                                       colIdx === 0 ? "pl-10 pr-4" : "px-4",
-                                      "py-2 text-sm text-secondary-600",
+                                      "py-2 text-sm text-secondary-600 overflow-hidden",
                                       ALIGN[col.align ?? "left"],
                                     ].join(" ")}
                                   >
-                                    {display}
+                                    {subCellContent}
                                   </td>
                                 );
                               })}
@@ -703,7 +758,7 @@ export function DataTable<T extends Record<string, unknown>>({
       </div>
 
       {/* ── Footer: pagination ── */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-secondary-200 px-4 py-3">
+      {!hidePagination && <div className="flex flex-wrap items-center justify-between gap-3 border-t border-secondary-200 px-4 py-3">
         {/* Row count info */}
         <p className="text-xs text-secondary-500">
           {totalRows === 0
@@ -767,7 +822,7 @@ export function DataTable<T extends Record<string, unknown>>({
             </button>
           </nav>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

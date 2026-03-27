@@ -265,7 +265,8 @@ export function AdminSidebar({
         {/* ── Navigation ────────────────────────────────────────────────── */}
         <nav
           aria-label="Admin navigation"
-          className="flex-1 overflow-y-auto px-2 py-3"
+          className="flex-1 overflow-y-auto px-2 py-3 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-secondary-600/50 hover:[&::-webkit-scrollbar-thumb]:bg-secondary-500/70"
+          style={{ scrollbarWidth: "thin", scrollbarColor: "rgb(71 85 105 / 0.5) transparent" }}
         >
           <ul role="list" className="flex flex-col gap-0.5">
             {visibleItems.map((item) => (
