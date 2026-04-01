@@ -16,7 +16,9 @@ export function SpecificationItemInput({ item, onChange }: SpecificationItemInpu
       {/* Type label — read-only */}
       <div className="pt-2">
         <span className="text-xs font-medium text-secondary-500">{item.typeLabel}</span>
-        <span className="mt-0.5 block font-mono text-[10px] text-secondary-400">{item.typeId}</span>
+        {item.description && (
+          <span className="mt-0.5 block text-[10px] text-secondary-400">{item.description}</span>
+        )}
       </div>
 
       {/* Value editor */}

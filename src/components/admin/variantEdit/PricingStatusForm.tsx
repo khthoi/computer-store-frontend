@@ -71,13 +71,15 @@ export function PricingStatusForm({ value, onChange, errors = {} }: PricingStatu
           errorMessage={errors.salePrice}
         />
 
-        {/* Live discount preview */}
-        {discount > 0 && (
-          <div className="flex items-center gap-2 rounded-lg border border-success-200 bg-success-50 px-3 py-2">
-            <span className="text-sm text-success-700">Discount applied:</span>
-            <Badge variant="success" size="sm">−{discount}%</Badge>
-          </div>
-        )}
+        {/* Live discount preview — always occupies space to prevent layout shift */}
+        <div className="min-h-[36px]">
+          {discount > 0 && (
+            <div className="flex items-center gap-2 rounded-lg border border-success-200 bg-success-50 px-3 py-2">
+              <span className="text-sm text-success-700">Discount applied:</span>
+              <Badge variant="success" size="sm">−{discount}%</Badge>
+            </div>
+          )}
+        </div>
       </div>
 
       <hr className="my-5 border-secondary-100" />

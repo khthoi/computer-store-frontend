@@ -1,5 +1,8 @@
 "use client";
 
+// editor.css is imported here (not brought in by the dynamic RichTextEditor)
+// because this component renders .rte-preview in view mode before the editor
+// chunk is ever downloaded.
 import "@/src/components/editor/styles/editor.css";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -7,10 +10,11 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/src/components/ui/Button";
 import { useToast } from "@/src/components/ui/Toast";
 
-// ─── Dynamic import — Quill must be client-only ───────────────────────────────
+// ─── Dynamic import — CKEditor must be client-only ────────────────────────────
 
 const RichTextEditor = dynamic(
-  () => import("@/src/components/editor").then((m) => ({ default: m.RichTextEditor })),
+  () =>
+    import("@/src/components/editor").then((m) => ({ default: m.RichTextEditor })),
   {
     ssr: false,
     loading: () => (
@@ -48,7 +52,6 @@ export function VariantDescriptionSection({
     setIsSaving(true);
     // Mock save — replace with real API call
     await new Promise<void>((resolve) => setTimeout(resolve, 400));
-    console.log("[VariantDescriptionSection] Saved description:", draft);
     setSaved(draft);
     setIsEditing(false);
     setIsSaving(false);
@@ -79,7 +82,7 @@ export function VariantDescriptionSection({
         <>
           {saved ? (
             <div
-              className="ql-editor-preview"
+              className="rte-preview"
               dangerouslySetInnerHTML={{ __html: saved }}
             />
           ) : (
@@ -96,7 +99,6 @@ export function VariantDescriptionSection({
             onChange={setDraft}
             placeholder="Write the variant description…"
             minHeight={240}
-            showCount
           />
           <div className="flex justify-end gap-2.5">
             <button

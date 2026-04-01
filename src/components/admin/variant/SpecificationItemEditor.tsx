@@ -1,12 +1,25 @@
 "use client";
 
 import "@/src/components/editor/styles/editor.css";
-import { useQuillEditor } from "@/src/components/editor/hooks/useQuillEditor";
+import dynamic from "next/dynamic";
 
 // ─── SpecificationItemEditor ──────────────────────────────────────────────────
 //
-// Lightweight Quill wrapper restricted to: Bold, Italic, Bullet list, Clean.
-// Used on the variant edit page (not the detail page).
+// Lightweight wrapper around RichTextEditor for per-spec-item values.
+// Uses the full CKEditor toolbar — no need for a cut-down variant.
+//
+// CKEditor references browser globals, so it must be loaded client-side only.
+
+const RichTextEditor = dynamic(
+  () =>
+    import("@/src/components/editor").then((m) => ({ default: m.RichTextEditor })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-20 animate-pulse rounded-lg bg-secondary-100" />
+    ),
+  }
+);
 
 interface SpecificationItemEditorProps {
   value: string;
@@ -19,34 +32,16 @@ export function SpecificationItemEditor({
   onChange,
   placeholder = "Enter specification value…",
 }: SpecificationItemEditorProps) {
-  const { toolbarRef, editorRef } = useQuillEditor({
-    value,
-    controlledValue: value,
-    placeholder,
-    onChange,
-  });
-
+  // `value` seeds the editor once on mount. CKEditor's <CKEditor data={value}>
+  // is not a true controlled input — subsequent prop changes do not re-apply
+  // the content. This is intentional: it prevents cursor-jumping when sibling
+  // form fields change and trigger parent re-renders.
   return (
-    <div className="ql-editor-wrapper">
-      {/* Minimal toolbar — Bold, Italic, Bullet list, Clean only */}
-      <div ref={toolbarRef} id="ql-spec-toolbar">
-        <span className="ql-formats">
-          <button type="button" className="ql-bold" />
-          <button type="button" className="ql-italic" />
-        </span>
-        <span className="ql-formats">
-          <button type="button" className="ql-list" value="bullet" />
-        </span>
-        <span className="ql-formats">
-          <button type="button" className="ql-clean" />
-        </span>
-      </div>
-
-      {/* Content area */}
-      <div
-        ref={editorRef}
-        style={{ minHeight: "80px", maxHeight: "200px", overflowY: "auto" }}
-      />
-    </div>
+    <RichTextEditor
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      minHeight={150}
+    />
   );
 }

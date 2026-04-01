@@ -1,6 +1,5 @@
 "use client";
 
-import "@/src/components/editor/styles/editor.css";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -17,7 +16,7 @@ import type { Product, ProductVariantDetail, SpecificationGroup, VariantMedia } 
 import type { VariantInfoFormValue } from "./VariantInfoForm";
 import type { PricingStatusFormValue } from "./PricingStatusForm";
 
-// ─── Dynamic import — Quill must be client-only ───────────────────────────────
+// ─── Dynamic import — CKEditor must be client-only ───────────────────────────
 
 const RichTextEditor = dynamic(
   () => import("@/src/components/editor").then((m) => ({ default: m.RichTextEditor })),
@@ -165,10 +164,10 @@ export function VariantEditPage({ product, variant }: VariantEditPageProps) {
       </div>
 
       {/* ── Two-column layout ── */}
-      <div className="grid gap-6 xl:grid-cols-[300px_1fr]">
+      <div className="grid gap-6 xl:grid-cols-[300px_1fr] xl:items-start">
 
-        {/* ── Left column ── */}
-        <div className="space-y-4">
+        {/* ── Left column — self-start so it doesn't stretch to match right column height ── */}
+        <div className="space-y-4 xl:relative xl:top-0">
           <VariantInfoForm
             value={info}
             onChange={setInfo}
@@ -193,7 +192,6 @@ export function VariantEditPage({ product, variant }: VariantEditPageProps) {
               onChange={setDescription}
               placeholder="Write the variant description…"
               minHeight={240}
-              showCount
             />
           </div>
 

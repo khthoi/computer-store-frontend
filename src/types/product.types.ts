@@ -74,6 +74,8 @@ export interface SpecificationItem {
   id: string;
   typeId: string;
   typeLabel: string;
+  /** Optional description / hint for this spec attribute */
+  description?: string;
   /** Lightweight HTML — plain text, ul/li, bold/italic only */
   value: string;
 }

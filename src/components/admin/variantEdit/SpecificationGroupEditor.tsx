@@ -7,6 +7,10 @@ import { SpecificationItemInput } from "./SpecificationItemInput";
 import type { SpecificationGroup, SpecificationItem } from "@/src/types/product.types";
 
 // ─── SpecificationGroupEditor ─────────────────────────────────────────────────
+//
+// Both inherited and direct groups are fully editable.
+// "Inherited" / "Direct" badges are purely visual — they indicate origin,
+// not editability. The description field on each item is shown read-only.
 
 interface SpecificationGroupEditorProps {
   group: SpecificationGroup;
@@ -38,9 +42,6 @@ export function SpecificationGroupEditor({ group, onChange }: SpecificationGroup
           ) : (
             <Badge variant="primary" size="sm">Direct</Badge>
           )}
-          {group.inherited && (
-            <span className="text-xs text-secondary-400">(read-only)</span>
-          )}
         </div>
         {isOpen ? (
           <ChevronDownIcon className="h-4 w-4 text-secondary-400" />
@@ -49,38 +50,18 @@ export function SpecificationGroupEditor({ group, onChange }: SpecificationGroup
         )}
       </button>
 
-      {/* Items */}
+      {/* Items — editable for both inherited and direct groups */}
       {isOpen && (
         <div className="border-t border-secondary-100 px-6 pb-4">
-          {group.inherited ? (
-            // Inherited groups are read-only — show values as plain text
-            <table className="w-full mt-2">
-              <tbody className="divide-y divide-secondary-50">
-                {group.items.map((item) => (
-                  <tr key={item.id}>
-                    <td className="py-2.5 pr-4 text-xs font-medium text-secondary-500 w-40 align-top">
-                      {item.typeLabel}
-                    </td>
-                    <td
-                      className="py-2.5 text-sm text-secondary-800 ql-editor-preview"
-                      dangerouslySetInnerHTML={{ __html: item.value }}
-                    />
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            // Direct groups are editable
-            <div className="mt-2">
-              {group.items.map((item) => (
-                <SpecificationItemInput
-                  key={item.id}
-                  item={item}
-                  onChange={handleItemChange}
-                />
-              ))}
-            </div>
-          )}
+          <div className="mt-2">
+            {group.items.map((item) => (
+              <SpecificationItemInput
+                key={item.id}
+                item={item}
+                onChange={handleItemChange}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

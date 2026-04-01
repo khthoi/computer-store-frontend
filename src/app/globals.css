@@ -21,6 +21,17 @@
 /* Activate tailwind.config.ts (optional — uncomment to use JS config) */
 /* @config "../tailwind.config.ts"; */
 
+/* ── Prevent double scrollbar ──────────────────────────────────────────────────
+ * AdminLayout uses h-screen overflow-hidden + a flex column where <main> has
+ * overflow-y-auto. Without this rule the browser document itself can also
+ * scroll, producing two simultaneous vertical scrollbars.
+ */
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    §1 · DESIGN TOKENS  (@theme)
    ═══════════════════════════════════════════════════════════════════════════ */

@@ -1,3 +1,4 @@
+import "@/src/components/editor/styles/editor.css";
 import type { SpecificationItem } from "@/src/types/product.types";
 
 // ─── SpecificationItemRow ─────────────────────────────────────────────────────
@@ -13,8 +14,9 @@ export function SpecificationItemRow({ item }: SpecificationItemRowProps) {
         {item.typeLabel}
       </td>
       <td className="py-2.5">
+        {/* rte-preview applies the shared read-only content styles */}
         <div
-          className="ql-editor-preview text-sm"
+          className="rte-preview text-sm"
           dangerouslySetInnerHTML={{ __html: item.value }}
         />
       </td>
