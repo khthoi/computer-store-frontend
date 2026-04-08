@@ -28,6 +28,15 @@ function segmentToLabel(segment: string): string {
 /** Route-group segments to skip (Next.js App Router convention) */
 const SKIP_SEGMENTS = new Set(["(dashboard)", "(auth)", "(admin)"]);
 
+/**
+ * Override the href for specific accumulated paths.
+ * Needed when a URL segment doesn't have a standalone page
+ * (e.g. /promotions/earn-rules redirects to /promotions?tab=earn-rules).
+ */
+const PATH_HREF_OVERRIDES: Record<string, string> = {
+  "/promotions/earn-rules": "/promotions?tab=earn-rules",
+};
+
 function deriveItems(pathname: string): BreadcrumbItem[] {
   const parts = pathname.split("/").filter(Boolean);
   const result: BreadcrumbItem[] = [];
@@ -41,7 +50,7 @@ function deriveItems(pathname: string): BreadcrumbItem[] {
     accumulated += `/${part}`;
     result.push({
       label: segmentToLabel(part),
-      href: accumulated,
+      href: PATH_HREF_OVERRIDES[accumulated] ?? accumulated,
     });
   }
 

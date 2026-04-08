@@ -77,13 +77,16 @@ function DeleteButton({ onConfirm }: { onConfirm: () => void }) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function EarnRulesTable({ items, onDelete, onToggleActive }: Props) {
+  const [page, setPage]         = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   type Row = LoyaltyEarnRule & Record<string, unknown>;
 
   const columns: ColumnDef<Row>[] = [
     {
       key: "name",
       header: "Name",
-      width: "w-[20%]",
+      width: "w-[18%]",
       render: (v, row) => (
         <div>
           <Tooltip content={v as string} anchorToContent>
@@ -100,6 +103,17 @@ export function EarnRulesTable({ items, onDelete, onToggleActive }: Props) {
             </p>
           )}
         </div>
+      ),
+    },
+    {
+      key: "priority",
+      header: "Priority",
+      width: "w-[7%]",
+      align: "center",
+      render: (v) => (
+        <span className="inline-flex items-center justify-center rounded-full bg-secondary-100 px-2 py-0.5 text-xs font-semibold text-secondary-700">
+          {v as number}
+        </span>
       ),
     },
     {
@@ -129,7 +143,7 @@ export function EarnRulesTable({ items, onDelete, onToggleActive }: Props) {
     {
       key: "scopes",
       header: "Scope",
-      width: "w-[18%]",
+      width: "w-[16%]",
       render: (v) => {
         const scopes = v as LoyaltyEarnRule["scopes"];
         if (!scopes || scopes.length === 0) {
@@ -144,7 +158,7 @@ export function EarnRulesTable({ items, onDelete, onToggleActive }: Props) {
             {scopes.map((s) => (
               <Tooltip
                 key={s.id}
-                content={`${s.scopeType === "category" ? "Category" : "Brand"}: ${s.scopeRefLabel} — ${s.multiplier}×`}
+                content={`${s.scopeType === "category" ? "Category" : s.scopeType === "brand" ? "Brand" : "Product Variant"}: ${s.scopeRefLabel} — ${s.multiplier}×`}
               >
                 <span className="inline-flex items-center rounded-full border border-primary-200 bg-primary-50 px-2 py-0.5 text-[10px] font-semibold text-primary-700 cursor-default">
                   {s.multiplier}× {s.scopeRefLabel}
@@ -235,17 +249,18 @@ export function EarnRulesTable({ items, onDelete, onToggleActive }: Props) {
     },
   ];
 
+  const pagedItems = items.slice((page - 1) * pageSize, page * pageSize);
+
   return (
     <DataTable
-      data={items as Row[]}
+      data={pagedItems as Row[]}
       columns={columns}
       keyField="id"
-      page={1}
-      pageSize={100}
+      page={page}
+      pageSize={pageSize}
       totalRows={items.length}
-      onPageChange={() => {}}
-      onPageSizeChange={() => {}}
-      hidePagination
+      onPageChange={setPage}
+      onPageSizeChange={(size) => { setPageSize(size); setPage(1); }}
       tableLayout="fixed"
       emptyMessage="No earn rules configured yet."
     />

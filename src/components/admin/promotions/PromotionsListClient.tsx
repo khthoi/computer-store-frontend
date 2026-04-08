@@ -9,18 +9,20 @@ import {
   TicketIcon,
   SparklesIcon,
   BoltIcon,
-  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline";
 import { PromotionsTable } from "./PromotionsTable";
 import { RedemptionCatalogTable } from "./RedemptionCatalogTable";
 import { RedemptionCatalogForm } from "./RedemptionCatalogForm";
+import { EarnRulesTable } from "./EarnRulesTable";
 import type { PromotionSummary } from "@/src/types/promotion.types";
-import type { LoyaltyRedemptionCatalog } from "@/src/types/loyalty.types";
+import type { LoyaltyRedemptionCatalog, LoyaltyEarnRule } from "@/src/types/loyalty.types";
 import {
   getRedemptionCatalog,
   updateRedemptionCatalogItem,
   deleteRedemptionCatalogItem,
   getEarnRules,
+  updateEarnRule,
+  deleteEarnRule,
 } from "@/src/services/loyalty.service";
 import { useToast } from "@/src/components/ui/Toast";
 
@@ -56,8 +58,8 @@ export function PromotionsListClient({ initialPromotions }: Props) {
   const [showCatalogForm, setShowCatalogForm] = useState(false);
   const [catalogLoading, setCatalogLoading] = useState(false);
 
-  // ── Earn rules badge count ─────────────────────────────────────────────────
-  const [earnRulesActiveCount, setEarnRulesActiveCount] = useState(0);
+  // ── Earn rules state ───────────────────────────────────────────────────────
+  const [earnRules, setEarnRules] = useState<LoyaltyEarnRule[]>([]);
 
   // Load both on mount so badge counts are available immediately
   useEffect(() => {
@@ -68,7 +70,7 @@ export function PromotionsListClient({ initialPromotions }: Props) {
     });
 
     getEarnRules().then((rules) => {
-      setEarnRulesActiveCount(rules.filter((r) => r.isActive).length);
+      setEarnRules(rules);
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -121,11 +123,11 @@ export function PromotionsListClient({ initialPromotions }: Props) {
 
         {isEarnRulesTab && (
           <Link
-            href="/promotions/earn-rules"
+            href="/promotions/earn-rules/new"
             className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
           >
-            <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-            Manage Earn Rules
+            <PlusIcon className="w-4 h-4" />
+            New Earn Rule
           </Link>
         )}
       </div>
@@ -200,7 +202,7 @@ export function PromotionsListClient({ initialPromotions }: Props) {
           <BoltIcon className="w-4 h-4" />
           Earn Rules
           <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${activeTab === "earn-rules" ? "bg-primary-100 text-primary-700" : "bg-secondary-200 text-secondary-500"}`}>
-            {earnRulesActiveCount}
+            {earnRules.filter((r) => r.isActive).length}
           </span>
         </button>
       </div>
@@ -265,38 +267,35 @@ export function PromotionsListClient({ initialPromotions }: Props) {
         </>
       )}
 
-      {/* ── Earn Rules — link-out card ────────────────────────────────────────── */}
+      {/* ── Earn Rules ───────────────────────────────────────────────────────── */}
       {activeTab === "earn-rules" && (
-        <div className="rounded-2xl border-2 border-dashed border-secondary-200 bg-secondary-50 p-10 flex flex-col items-center text-center gap-4">
-          <div className="rounded-2xl bg-primary-50 p-4">
-            <BoltIcon className="w-8 h-8 text-primary-500" />
-          </div>
-          <div>
-            <h3 className="text-base font-semibold text-secondary-800">
-              Earn Rules are managed on a dedicated page
-            </h3>
-            <p className="mt-1 text-sm text-secondary-500 max-w-sm">
-              Configure point earn rates, scope multipliers, and bonuses from the Earn Rules management page.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/promotions/earn-rules"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
-            >
-              <BoltIcon className="w-4 h-4" />
-              Go to Earn Rules
-              <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5" />
-            </Link>
-            <Link
-              href="/promotions/earn-rules/new"
-              className="inline-flex items-center gap-2 rounded-xl border border-secondary-200 bg-white px-5 py-2.5 text-sm font-semibold text-secondary-700 transition-colors hover:bg-secondary-50"
-            >
-              <PlusIcon className="w-4 h-4" />
-              New Earn Rule
-            </Link>
-          </div>
-        </div>
+        <EarnRulesTable
+          items={earnRules}
+          onDelete={async (id) => {
+            setEarnRules((prev) => prev.filter((r) => r.id !== id));
+            try {
+              await deleteEarnRule(id);
+              showToast("Earn rule deleted.", "success");
+            } catch {
+              // refetch on error
+              getEarnRules().then(setEarnRules);
+              showToast("Failed to delete.", "error");
+            }
+          }}
+          onToggleActive={async (id, isActive) => {
+            setEarnRules((prev) =>
+              prev.map((r) => (r.id === id ? { ...r, isActive } : r))
+            );
+            try {
+              await updateEarnRule(id, { isActive });
+            } catch {
+              setEarnRules((prev) =>
+                prev.map((r) => (r.id === id ? { ...r, isActive: !isActive } : r))
+              );
+              showToast("Failed to update.", "error");
+            }
+          }}
+        />
       )}
     </>
   );

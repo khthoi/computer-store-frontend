@@ -7,6 +7,7 @@ import type {
   LoyaltyEarnRule,
   LoyaltyEarnRulePayload,
 } from "@/src/types/loyalty.types";
+import { MOCK_VARIANTS } from "@/src/app/(dashboard)/products/[id]/variants/_mock";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -541,7 +542,7 @@ export let MOCK_EARN_RULES: LoyaltyEarnRule[] = [
   {
     id: "EARN-002",
     name: "Gaming Category Bonus",
-    description: "Customers earn 2x points on products in the Linh kiện Gaming category.",
+    description: "Customers earn 2x points on products in the Linh kiện máy tính category, 1.5x on ASUS brand.",
     pointsPerUnit: 1,
     spendPerUnit: 10000,
     minOrderValue: undefined,
@@ -553,9 +554,25 @@ export let MOCK_EARN_RULES: LoyaltyEarnRule[] = [
         id: "EARN-002-S1",
         ruleId: "EARN-002",
         scopeType: "category",
-        scopeRefId: "cat-gaming",
-        scopeRefLabel: "Linh kiện Gaming",
+        scopeRefId: "cat-001",
+        scopeRefLabel: "Linh kiện máy tính",
         multiplier: 2.0,
+      },
+      {
+        id: "EARN-002-S2",
+        ruleId: "EARN-002",
+        scopeType: "brand",
+        scopeRefId: "brand-001",
+        scopeRefLabel: "ASUS",
+        multiplier: 1.5,
+      },
+      {
+        id: "EARN-002-S3",
+        ruleId: "EARN-002",
+        scopeType: "product",
+        scopeRefId: MOCK_VARIANTS[0]?.id ?? "var-001",
+        scopeRefLabel: MOCK_VARIANTS[0]?.name ?? "RTX 4090",
+        multiplier: 3.0,
       },
     ],
     isActive: true,

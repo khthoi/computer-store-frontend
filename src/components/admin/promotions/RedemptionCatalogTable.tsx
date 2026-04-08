@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { SparklesIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import type { LoyaltyRedemptionCatalog } from "@/src/types/loyalty.types";
@@ -36,6 +37,9 @@ export function RedemptionCatalogTable({
   onDelete,
   onToggleActive,
 }: Props) {
+  const [page, setPage]         = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   type Row = LoyaltyRedemptionCatalog & Record<string, unknown>;
 
   const columns: ColumnDef<Row>[] = [
@@ -165,17 +169,18 @@ export function RedemptionCatalogTable({
     },
   ];
 
+  const pagedItems = initialItems.slice((page - 1) * pageSize, page * pageSize);
+
   return (
     <DataTable
-      data={initialItems as Row[]}
+      data={pagedItems as Row[]}
       columns={columns}
       keyField="id"
-      page={1}
-      pageSize={100}
+      page={page}
+      pageSize={pageSize}
       totalRows={initialItems.length}
-      onPageChange={() => {}}
-      onPageSizeChange={() => {}}
-      hidePagination
+      onPageChange={setPage}
+      onPageSizeChange={(size) => { setPageSize(size); setPage(1); }}
       tableLayout="fixed"
       emptyMessage="No redemption catalog items yet."
     />

@@ -17,6 +17,15 @@ export interface VariantFormData {
 // ─── Service ───────────────────────────────────────────────────────────────
 
 /**
+ * Fetch all variants across all products (for scope selector use case).
+ * Mock implementation — replace with GET /admin/variants (or /admin/products/variants/all)
+ */
+export async function getAllVariants(): Promise<PhienBanSanPham[]> {
+  await new Promise<void>((r) => setTimeout(r, 50));
+  return MOCK_VARIANTS;
+}
+
+/**
  * Fetch all variants for a product.
  * Mock implementation — replace with GET /admin/products/:productId/variants
  */

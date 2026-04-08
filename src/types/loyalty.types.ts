@@ -75,13 +75,13 @@ export interface LoyaltyRedemptionCatalogPayload {
 
 // ─── Earn Rules ───────────────────────────────────────────────────────────────
 
-export type EarnRuleScope = "global" | "category" | "brand";
+export type EarnRuleScope = "global" | "category" | "brand" | "product";
 export type EarnRuleBonusTrigger = "first_order" | "birthday" | "manual";
 
 export interface LoyaltyEarnRuleScopeEntry {
   id: string;
   ruleId: string;
-  scopeType: "category" | "brand";
+  scopeType: "category" | "brand" | "product";
   scopeRefId: string;
   scopeRefLabel: string;
   multiplier: number; // e.g. 2.0 = 2x points
