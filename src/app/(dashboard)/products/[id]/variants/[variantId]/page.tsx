@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProductById, getVariantById } from "@/src/services/product.service";
+import { getProductById, getVariantById, getVariantSalesStats, getVariantReviews } from "@/src/services/product.service";
 import {
   VariantHeader,
   ProductSummaryCard,
@@ -9,6 +9,8 @@ import {
   VariantDescriptionSection,
   SpecificationGroupPanel,
   MediaGallery,
+  VariantSalesStatsCard,
+  VariantReviewsSection,
 } from "@/src/components/admin/variant";
 
 // ─── Route config ──────────────────────────────────────────────────────────────
@@ -38,9 +40,11 @@ export default async function VariantDetailPage({
 }) {
   const { id, variantId } = await params;
 
-  const [product, variant] = await Promise.all([
+  const [product, variant, salesStats, reviews] = await Promise.all([
     getProductById(id),
     getVariantById(id, variantId),
+    getVariantSalesStats(id, variantId),
+    getVariantReviews(variantId),
   ]);
 
   if (!product || !variant) notFound();
@@ -55,6 +59,7 @@ export default async function VariantDetailPage({
           <ProductSummaryCard product={product} />
           <PricingStatusSection variant={variant} />
           <VariantInfoSection variant={variant} />
+          <VariantSalesStatsCard stats={salesStats} />
         </div>
 
         {/* ── Right column ── */}
@@ -74,6 +79,9 @@ export default async function VariantDetailPage({
           )}
 
           <MediaGallery media={variant.media} />
+
+          {/* ── Customer reviews ── */}
+          <VariantReviewsSection variantId={variantId} reviews={reviews} />
         </div>
       </div>
     </div>

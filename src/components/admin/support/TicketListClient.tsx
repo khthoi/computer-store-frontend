@@ -20,7 +20,7 @@ import {
   getTicketStats,
   getStaffOptions,
   createTicket,
-  bulkAssign,
+  assignTicket,
 } from "@/src/services/ticket.service";
 import type {
   TicketSummary,
@@ -206,7 +206,6 @@ export function TicketListClient() {
   const [showCreate, setShowCreate] = useState(false);
   const [showAssign, setShowAssign] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [isAssigning, setIsAssigning] = useState(false);
 
   const columns = buildColumns();
 
@@ -269,22 +268,20 @@ export function TicketListClient() {
     }
   }
 
-  async function handleAssign(payload: {
-    staffId: string;
-    staffName: string;
-    ticketIds: string[];
-  }) {
-    setIsAssigning(true);
-    try {
-      await bulkAssign(payload.ticketIds.map(Number), Number(payload.staffId));
-      showToast(`Đã phân công ${payload.ticketIds.length} phiếu cho ${payload.staffName}`, "success");
-      setSelected([]);
-      setShowAssign(false);
-      await loadData();
-    } catch {
-      showToast("Không thể phân công", "error");
-    } finally {
-      setIsAssigning(false);
+  async function handleAssignOne(ticketId: string, staffId: string) {
+    await assignTicket(Number(ticketId), Number(staffId));
+  }
+
+  async function handleAssignDone(result: { successIds: string[]; failedIds: string[]; staffName: string }) {
+    setSelected([]);
+    await loadData();
+    if (result.failedIds.length === 0) {
+      showToast(`Đã phân công ${result.successIds.length} phiếu cho ${result.staffName}`, "success");
+    } else {
+      showToast(
+        `Phân công hoàn tất: ${result.successIds.length} thành công, ${result.failedIds.length} thất bại`,
+        "error"
+      );
     }
   }
 
@@ -377,10 +374,13 @@ export function TicketListClient() {
       <TicketAssignModal
         isOpen={showAssign}
         onClose={() => setShowAssign(false)}
-        onAssign={handleAssign}
+        onAssignOne={handleAssignOne}
+        onDone={handleAssignDone}
         ticketIds={selected}
+        ticketSummaries={tickets
+          .filter((t) => selected.includes(String(t.ticketId)))
+          .map((t) => ({ ticketId: String(t.ticketId), maTicket: t.maTicket, tieuDe: t.tieuDe }))}
         staffOptions={staffSelectOptions}
-        isSaving={isAssigning}
       />
     </div>
   );

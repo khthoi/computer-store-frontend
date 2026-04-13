@@ -60,6 +60,9 @@ export type { AvatarProps, AvatarGroupProps, AvatarSize, AvatarStatus, AvatarSha
 export { Popover } from "./Popover";
 export type { PopoverProps, PopoverPlacement } from "./Popover";
 
+export { DropdownAction } from "./DropdownAction";
+export type { DropdownActionProps, DropdownActionItem, DropdownActionVariant } from "./DropdownAction";
+
 export { SideBanner } from "./SideBanner";
 export type { SideBannerProps } from "./SideBanner";
 

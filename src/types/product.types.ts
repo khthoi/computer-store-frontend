@@ -107,3 +107,28 @@ export interface ProductVariantDetail {
   specificationGroups: SpecificationGroup[];
   media: VariantMedia[];
 }
+
+// ─── Variant stats ────────────────────────────────────────────────────────────
+
+export interface VariantSalesStats {
+  tongDonHang:    number;   // tổng đơn hàng chứa phiên bản này
+  tongSoLuongBan: number;   // tổng số lượng đã bán
+  doanhThu:       number;   // doanh thu từ phiên bản (VND)
+  tyLeHoanTra:    number;   // tỉ lệ hoàn trả (0–100, 1 decimal)
+}
+
+export interface VariantReviewStats {
+  tongDanhGia:  number;
+  daDuyet:      number;
+  choDuyet:     number;
+  tuChoi:       number;
+  daAn:         number;
+  tbRating:     number;   // 1 decimal, e.g. 4.3
+  phanBoRating: {
+    "5": number;
+    "4": number;
+    "3": number;
+    "2": number;
+    "1": number;
+  };
+}

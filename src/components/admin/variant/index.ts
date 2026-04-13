@@ -10,3 +10,7 @@ export { SpecificationItemRow }      from "./SpecificationItemRow";
 export { SpecificationItemEditor }   from "./SpecificationItemEditor";
 export { MediaGallery }              from "./MediaGallery";
 export { MediaItemCard }             from "./MediaItemCard";
+export { VariantSalesStatsCard }     from "./VariantSalesStatsCard";
+export { VariantRatingSummary }      from "./VariantRatingSummary";
+export { VariantReviewCard }         from "./VariantReviewCard";
+export { VariantReviewsSection }     from "./VariantReviewsSection";

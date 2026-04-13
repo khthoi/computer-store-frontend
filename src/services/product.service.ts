@@ -1,4 +1,5 @@
-import type { Product, ProductVariant, ProductVariantDetail, DetailVariantStatus, SpecificationGroup, VariantMedia } from "@/src/types/product.types";
+import type { Product, ProductVariant, ProductVariantDetail, DetailVariantStatus, SpecificationGroup, VariantMedia, VariantSalesStats } from "@/src/types/product.types";
+import type { ReviewSummary } from "@/src/types/review.types";
 import { MOCK_PRODUCTS } from "@/src/app/(dashboard)/products/_mock";
 import { MOCK_VARIANT } from "@/src/app/(dashboard)/products/[id]/variants/[variantId]/_mock";
 import { MOCK_SPEC_TEMPLATES } from "@/src/app/(dashboard)/products/_mock_spec_templates";
@@ -320,4 +321,179 @@ export function getProductCategories(): string[] {
  */
 export function getProductBrands(): string[] {
   return [...new Set(MOCK_PRODUCTS.flatMap((p) => p.brands))].sort();
+}
+
+// ─── Variant sales stats ──────────────────────────────────────────────────────
+
+/**
+ * Returns sales statistics for a specific product variant.
+ * Mock implementation — replace with GET /admin/products/:id/variants/:variantId/stats.
+ */
+export async function getVariantSalesStats(
+  _productId: string,
+  _variantId: string
+): Promise<VariantSalesStats> {
+  await delay(300);
+  return {
+    tongDonHang:    248,
+    tongSoLuongBan: 312,
+    doanhThu:       14_644_800_000,
+    tyLeHoanTra:    1.6,
+  };
+}
+
+// ─── Variant reviews ──────────────────────────────────────────────────────────
+
+/**
+ * Returns reviews for a specific variant (phienBanId).
+ * Mock implementation — replace with GET /admin/variants/:variantId/reviews.
+ */
+export async function getVariantReviews(variantId: string): Promise<ReviewSummary[]> {
+  await delay(300);
+  const phienBanId = Number(variantId) || 101;
+
+  return [
+    {
+      reviewId: 1001,
+      phienBanId,
+      tenSanPham:      "ASUS ROG Strix GeForce RTX 4090 OC",
+      tenPhienBan:     "24GB GDDR6X — Standard Edition",
+      anhPhienBan:     "https://picsum.photos/seed/rtx4090/80/80",
+      khachHangId:     501,
+      khachHangTen:    "Nguyễn Minh Tuấn",
+      donHangId:       801,
+      maDonHang:       "DH-2024-000801",
+      rating:          5,
+      tieuDe:          "Card đồ họa tốt nhất tôi từng dùng",
+      noiDung:         "Hiệu năng cực kỳ ấn tượng, chạy 4K 144fps mượt mà. Tản nhiệt tốt, sau 2 giờ gaming nhiệt độ chỉ 72°C. Đóng gói cẩn thận, giao hàng nhanh. Rất hài lòng với sản phẩm!",
+      trangThai:       "Approved",
+      daPhanHoi:       true,
+      helpfulCount:    28,
+      nguon:           "Website",
+      nguoiDuyetId:    1,
+      nguoiDuyetTen:   "Admin Hệ thống",
+      duyetTai:        "2024-11-05T09:00:00Z",
+      createdAt:       "2024-11-04T15:30:00Z",
+      updatedAt:       "2024-11-05T09:00:00Z",
+    },
+    {
+      reviewId: 1002,
+      phienBanId,
+      tenSanPham:      "ASUS ROG Strix GeForce RTX 4090 OC",
+      tenPhienBan:     "24GB GDDR6X — Standard Edition",
+      anhPhienBan:     "https://picsum.photos/seed/rtx4090/80/80",
+      khachHangId:     502,
+      khachHangTen:    "Trần Quốc Bảo",
+      donHangId:       802,
+      maDonHang:       "DH-2024-000802",
+      rating:          4,
+      tieuDe:          "Mạnh nhưng hơi nóng",
+      noiDung:         "Card chạy rất mạnh, 3DMark đạt điểm cao. Tuy nhiên dưới tải nặng nhiệt độ lên đến 85°C, cần case thông gió tốt. Nhìn chung vẫn xứng đáng với số tiền bỏ ra.",
+      trangThai:       "Approved",
+      daPhanHoi:       true,
+      helpfulCount:    14,
+      nguon:           "Website",
+      nguoiDuyetId:    1,
+      nguoiDuyetTen:   "Admin Hệ thống",
+      duyetTai:        "2024-11-08T10:15:00Z",
+      createdAt:       "2024-11-07T20:10:00Z",
+      updatedAt:       "2024-11-08T10:15:00Z",
+    },
+    {
+      reviewId: 1003,
+      phienBanId,
+      tenSanPham:      "ASUS ROG Strix GeForce RTX 4090 OC",
+      tenPhienBan:     "24GB GDDR6X — Standard Edition",
+      anhPhienBan:     "https://picsum.photos/seed/rtx4090/80/80",
+      khachHangId:     503,
+      khachHangTen:    "Lê Thị Phương Anh",
+      donHangId:       803,
+      maDonHang:       "DH-2024-000803",
+      rating:          4,
+      tieuDe:          "Sản phẩm ổn, đáng mua",
+      noiDung:         "Dùng để làm việc đồ họa và render video 3D, tốc độ render nhanh hơn card cũ 3 lần. RGB đẹp, thiết kế sang trọng. Chỉ tiếc là kích thước khá lớn, không vừa một số case nhỏ.",
+      trangThai:       "Approved",
+      daPhanHoi:       false,
+      helpfulCount:    9,
+      nguon:           "Website",
+      nguoiDuyetId:    1,
+      nguoiDuyetTen:   "Admin Hệ thống",
+      duyetTai:        "2024-11-12T14:00:00Z",
+      createdAt:       "2024-11-11T11:45:00Z",
+      updatedAt:       "2024-11-12T14:00:00Z",
+    },
+    {
+      reviewId: 1004,
+      phienBanId,
+      tenSanPham:      "ASUS ROG Strix GeForce RTX 4090 OC",
+      tenPhienBan:     "24GB GDDR6X — Standard Edition",
+      anhPhienBan:     "https://picsum.photos/seed/rtx4090/80/80",
+      khachHangId:     504,
+      khachHangTen:    "Phạm Đức Hùng",
+      donHangId:       804,
+      maDonHang:       "DH-2024-000804",
+      rating:          5,
+      tieuDe:          "Tuyệt vời, không có gì để chê",
+      noiDung:         "Mua về cắm vào chơi ngay, driver nhận chuẩn. Cyberpunk 2077 bật ultra + ray tracing vẫn 120fps ổn định. Đèn RGB đẹp, đồng bộ với phần mềm Armoury Crate. Recommend 10/10.",
+      trangThai:       "Pending",
+      daPhanHoi:       false,
+      helpfulCount:    0,
+      nguon:           "Website",
+      createdAt:       "2024-11-15T08:20:00Z",
+      updatedAt:       "2024-11-15T08:20:00Z",
+    },
+    {
+      reviewId: 1005,
+      phienBanId,
+      tenSanPham:      "ASUS ROG Strix GeForce RTX 4090 OC",
+      tenPhienBan:     "24GB GDDR6X — Standard Edition",
+      anhPhienBan:     "https://picsum.photos/seed/rtx4090/80/80",
+      khachHangId:     505,
+      khachHangTen:    "Võ Văn Khải",
+      donHangId:       805,
+      maDonHang:       "DH-2024-000805",
+      rating:          2,
+      tieuDe:          "Nhận hàng bị lỗi quạt",
+      noiDung:         "Quạt số 2 phát ra tiếng kêu lạ sau 1 tuần sử dụng. Đã liên hệ bảo hành nhưng chưa được giải quyết. Chất lượng không tương xứng với giá tiền.",
+      trangThai:       "Rejected",
+      daPhanHoi:       false,
+      helpfulCount:    3,
+      nguon:           "Website",
+      nguoiDuyetId:    1,
+      nguoiDuyetTen:   "Admin Hệ thống",
+      lyDoTuChoi:      "Đánh giá không phản ánh chất lượng sản phẩm, vấn đề thuộc về bảo hành. Khách hàng vui lòng liên hệ CSKH.",
+      duyetTai:        "2024-11-10T16:30:00Z",
+      createdAt:       "2024-11-09T19:00:00Z",
+      updatedAt:       "2024-11-10T16:30:00Z",
+    },
+    {
+      reviewId: 1006,
+      phienBanId,
+      tenSanPham:      "ASUS ROG Strix GeForce RTX 4090 OC",
+      tenPhienBan:     "24GB GDDR6X — Standard Edition",
+      anhPhienBan:     "https://picsum.photos/seed/rtx4090/80/80",
+      khachHangId:     506,
+      khachHangTen:    "Đinh Thị Lan",
+      donHangId:       806,
+      maDonHang:       "DH-2024-000806",
+      rating:          3,
+      tieuDe:          "Tạm được, còn nhiều điều cần cải thiện",
+      noiDung:         "Hiệu năng tốt nhưng giá hơi cao so với thị trường. Driver đôi khi xung đột với một số phần mềm. Đóng gói cẩn thận, giao hàng đúng hẹn.",
+      trangThai:       "Hidden",
+      daPhanHoi:       false,
+      helpfulCount:    1,
+      nguon:           "Website",
+      nguoiDuyetId:    1,
+      nguoiDuyetTen:   "Admin Hệ thống",
+      duyetTai:        "2024-11-13T11:00:00Z",
+      createdAt:       "2024-11-12T22:30:00Z",
+      updatedAt:       "2024-11-13T11:00:00Z",
+    },
+  ];
+}
+
+// ─── Internal delay helper ────────────────────────────────────────────────────
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
